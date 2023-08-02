@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500i,900,900i');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  @apply bg-gray-800 text-white;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.panel-store-card:hover {
+  scale: 1.05;
+  transition: ease-in-out;
+  /* transition-delay: 0.2s; */
+}
+
+img[alt~="roulette-static"] {
+  position: absolute;
+  z-index: 5;
+  width: 20%;
+  /* right: 180px;
+  top: -40px; */
+  right: 17px;
+  top: 17px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  content: url("https://www.watchgang.com/webflow_assets/wheel-door-v3/images/wheel-pointer.png");
+}
+
+.parent-container {
+  width: 400px;
+  height: 400px;
+
+  >div {
+    height: 100%;
+    width: 100%;
+    max-height: unset;
+    max-width: unset;
+  }
+}
+
+.card .card-face.card-back-face {
+  transform: rotateY(180deg);
+}
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card.is-inactive {
+  opacity: 0;
+}
+
+.puzzle-Font-family-shadow {
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0px 2px 0px rgba(78, 45, 15, 1);
+  font-family: 'Rubik', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  font-style: normal;
+  line-height: 48px;
+  -webkit-text-stroke: 1px black;
+  -webkit-text-fill-color: white;
+}
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}
+
+.transition-button-all-wof-puzzle {
+  transition: all .2s ease-in-out;
+}
+
+.transition-button-all-wof-puzzle:hover {
+  transform: scale(1.04);
+}
+
+.transition-button-all-wof-puzzle-focus:focus {
+  outline: 0;
+}
+
+.animate-button-animate-play::before {
+  content: "";
+  z-index: 10;
+  position: absolute;
+  height: 200%;
+  width: 200%;
+  top: -120%;
+  left: -120%;
+  background: linear-gradient(transparent 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.1) 55%, transparent 100%);
+  transition: all 2s;
+  transform: rotate(-105deg);
+  animation: shine 6s infinite forwards;
+}
+
+@keyframes shine {
+  0% {
+    top: -120%;
+    left: -120%;
+  }
+
+  20% {
+    left: 100%;
+    top: 100%;
+  }
+
+  40% {
+    left: 100%;
+    top: 100%;
+  }
+
+  100% {
+    left: 100%;
+    top: 100%;
+  }
+}
+
+.shining-gradient-border {
+  --borderWidth: 1.5px;
+  position: relative;
+  /* border-radius: var(--borderWidth); */
+}
+
+
+.gradient-border {
+  --borderWidth: 1.5px;
+  position: relative;
+  /* border-radius: var(--borderWidth); */
+}
+
+.gradient-border:after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  height: calc(100% + var(--borderWidth) * 2);
+  width: calc(100% + var(--borderWidth) * 2);
+  background: linear-gradient(60deg,
+      #f79533,
+      #f37055,
+      #ef4e7b,
+      #a166ab,
+      #5073b8,
+      #1098ad,
+      #07b39b,
+      #6fba82);
+  border-radius: calc(5.3 * var(--borderWidth));
+  z-index: -1;
+  animation: animatedgradient 2s ease alternate infinite;
+  background-size: 300% 300%;
+}
+
+@keyframes animatedgradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}

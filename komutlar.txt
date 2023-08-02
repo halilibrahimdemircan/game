@@ -1,0 +1,3 @@
+0-) (ilk kurulum) önce yarn kurulacak, sonra yarn install.
+0.5-) (ilk kurulum) yarn add opensea-js 
+1-) yarn run start
