@@ -5,10 +5,12 @@ const TestPage = () => {
   const getCreatures = async () => {
     const creatures = await fetch("https://gapi.nftinit.io/api/get_creature/", {
       method: "POST",
+      mode: "cors",
       headers: {
-        Accept: "*/*",
+        "Access-Control-Allow-Origin": "*",
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: JSON.stringify({
+        userInfo: JSON.stringify({
           token: "12345",
           character_id: "12",
         }),
