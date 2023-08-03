@@ -51,13 +51,7 @@ const NavBar = () => {
           >
             <PassSection headers={'Other'} />
           </div>
-          <div
-            className={`${
-              id?.value === '4' ? 'bg-#0066FF' : 'bg-#1E1E1E'
-            } rounded-full`}
-          >
-            <PassSection headers={'Pass'} />
-          </div>
+         
         </div>
       </div> */}
 
