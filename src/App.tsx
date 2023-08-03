@@ -14,6 +14,7 @@ import lazyWithRetry from "./utils/lazyWithRetry";
 import { logout, selectUser, checkUserAsync } from "./features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import TestPage from "./pages/TestPage/TestPage";
 
 // const LoginPage = lazyWithRetry(() => import('./pages/LoginPage/LoginPage'))
 
@@ -67,9 +68,11 @@ const Main = () => {
             </ErrorBoundary>
           </MainLayout>
         </Route>
-        <Route exact path="/profile">
+        <Route exact path="/test">
           <MainLayout>
-            <ErrorBoundary>{/* <ProfilePage /> */}</ErrorBoundary>
+            <ErrorBoundary>
+              <TestPage />
+            </ErrorBoundary>
           </MainLayout>
         </Route>
         <Redirect to="/" />
