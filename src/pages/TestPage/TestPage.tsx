@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const TestPage = () => {
-  const [gameInfo, setGameInfo] = useState({});
+  const [creatures, setCreatures] = useState([]);
   const getCreatures = async () => {
     const creatures = await fetch("https://gapi.nftinit.io/api/get_creature/", {
       method: "POST",
@@ -19,7 +19,8 @@ const TestPage = () => {
 
       // })
     }).then((res) => res.json());
-    console.log("creatures :>> ", creatures);
+    // console.log("creatures :>> ", creatures);
+    setCreatures(creatures);
 
     // burada gelen creatureları setleyeceğiz
   };
@@ -66,11 +67,22 @@ const TestPage = () => {
     getCreatures();
   }, []);
 
+  const handleChangeSelection = (selection: any) => {};
+
   return (
     <div className="flex justify-center items-center">
       <div className="border p-4 flex flex-col gap-8">
         <select name="" id="">
-          <option value="">zebra</option>
+          {creatures.map((option: any) => {
+            return (
+              <option
+                onChange={() => handleChangeSelection(option.id)}
+                value=""
+              >
+                {}
+              </option>
+            );
+          })}
           <option value="">solucan</option>
           <option value="">aslan</option>
         </select>
