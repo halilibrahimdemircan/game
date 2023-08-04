@@ -155,8 +155,8 @@ const TestPage = () => {
   }, [gameState]);
 
   return (
-    <div className="flex flex-col gap-4 justify-center items-center ">
-      <div className="flex w-screen min-h-20 p-4 bg-gray-800 justify-center ">
+    <div className="flex flex-col justify-center items-center ">
+      <div className="flex w-full min-h-20 p-4 bg-gray-800 justify-center ">
         {/* <h3>Character Stats</h3> */}
         {
           // @ts-ignore
@@ -214,13 +214,16 @@ const TestPage = () => {
           )
         }
       </div>
-      <div className="grid grid-cols-12 gap-10 w-full justify-between">
-        <div className="col-span-2 ">
+      <div
+        style={{ height: "calc(100vh - 80px)" }}
+        className="grid grid-cols-12 gap-10 w-full justify-between "
+      >
+        <div className="col-span-2 bg-gray-800  h-full overflow-auto relative">
           <div className="flex flex-col ">
-            <span className="text-green-500 text-base font-medium ">
+            <span className="text-green-500 text-base font-medium sticky top-0 bg-gray-800 p-4">
               Inventory
             </span>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 px-4">
               {
                 // @ts-ignore
                 gameState?.character?.info?.inventory?.map((item) => {
@@ -230,7 +233,7 @@ const TestPage = () => {
             </div>
           </div>
         </div>
-        <div className=" col-span-8 flex flex-col gap-4 ">
+        <div className=" col-span-8 flex flex-col gap-4 p-4 h-full overflow-auto">
           <div className="grid grid-cols-8 gap-4">
             <div className="col-span-2 p-4 flex flex-col gap-8">
               <select
@@ -302,12 +305,12 @@ const TestPage = () => {
             )}
           </div>
         </div>
-        <div className="col-span-2 ">
+        <div className="col-span-2 bg-gray-800  h-full overflow-auto relative">
           <div className="flex flex-col gap-2 ">
-            <span className="text-green-500 text-base font-medium ">
+            <span className="text-green-500 text-base font-medium sticky top-0 p-4">
               Skills
             </span>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 px-4">
               {
                 // @ts-ignore
                 gameState?.character?.info?.skill_and_stat
