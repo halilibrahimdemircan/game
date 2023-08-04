@@ -150,9 +150,9 @@ const TestPage = () => {
       },
     }));
   };
-  useEffect(() => {
-    console.log("gameState:>> ", gameState);
-  }, [gameState]);
+  // useEffect(() => {
+  //   console.log("gameState:>> ", gameState);
+  // }, [gameState]);
 
   return (
     <div className="flex flex-col justify-center items-center ">
@@ -234,6 +234,36 @@ const TestPage = () => {
           </div>
         </div>
         <div className=" col-span-8 flex flex-col gap-4 p-4 h-full overflow-auto">
+          <div className=" grid grid-cols-8 gap-4">
+            <div className="col-span-2"></div>
+            {gameState?.battle?.battleInfo && (
+              <div className="border border-gray-500 rounded min-w-165 min-h-20 flex flex-col p-2 items-center">
+                <span>Battle Stats</span>
+                <div className="flex gap-4 items-start">
+                  <div className="flex flex-col ">
+                    <span>Character HP</span>
+                    <span>
+                      {" "}
+                      {
+                        // @ts-ignore
+                        gameState?.battle?.battleInfo?.character_hp
+                      }
+                    </span>
+                  </div>
+                  <div className="flex flex-col ">
+                    <span>Creature HP</span>
+                    <span>
+                      {" "}
+                      {
+                        // @ts-ignore
+                        gameState?.battle?.battleInfo?.creature_hp
+                      }
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
           <div className="grid grid-cols-8 gap-4">
             <div className="col-span-2 p-4 flex flex-col gap-8">
               <select
