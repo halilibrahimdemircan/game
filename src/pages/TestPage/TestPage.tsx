@@ -288,7 +288,7 @@ const TestPage = () => {
             </button>
           )}
         </div>
-        <div className="border min-w-165 min-h-60 flex flex-col">
+        <div className="border border-gray-500 rounded min-w-165 min-h-60 flex flex-col p-2">
           <div className="w-full flex justify-center">Logs</div>
           {gameState.battle.logs?.map((log: any) => {
             return (
