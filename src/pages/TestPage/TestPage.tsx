@@ -133,6 +133,7 @@ const TestPage = () => {
 
   useEffect(() => {
     getCreatures();
+    characterInfo();
   }, []);
 
   const handleChangeSelection = (creatureId: any) => {
@@ -150,13 +151,15 @@ const TestPage = () => {
   }, [gameState]);
 
   return (
-    <div className="flex flex-col justify-center items-center border border-red-500">
+    <div className="flex flex-col justify-center items-center ">
       <div className="flex flex-col w-screen min-h-20">
         <h3>Character Stats</h3>
         {gameState?.character.info.character_hp && (
-          <div className="border flex">
-            <div className="flex flex-col border">
-              <span>Health</span>
+          <div className=" flex gap-4">
+            <div className="flex flex-col">
+              <span className="text-green-500 text-base font-medium ">
+                Health
+              </span>
               <span>
                 {gameState?.character.info.character_hp
                   .health_points_available +
@@ -164,37 +167,58 @@ const TestPage = () => {
                   gameState?.character.info.character_hp.health_points_max}
               </span>
             </div>
-            <div className="flex flex-col border">
-              <span>Gold</span>
+            <div className="flex flex-col">
+              <span className="text-green-500 text-base font-medium ">
+                Gold
+              </span>
               <span>{gameState?.character.info.gold_amount}</span>
             </div>
-            <div className="flex flex-col border">
-              <span>Inventory</span>
+            <div className="flex flex-col">
+              <span className="text-green-500 text-base font-medium ">
+                Inventory
+              </span>
               {gameState?.character.info.inventory.map((item) => {
                 return <span>{item.item_name}</span>;
               })}
             </div>
-            <div className="flex flex-col border">
-              <span>Attributes</span>
+            <div className="flex flex-col">
+              <span className="text-green-500 text-base font-medium ">
+                Attributes
+              </span>
               {gameState?.character.info.skill_and_stat
                 .filter((el: any) => !el.is_skill)
                 .map((skill: any) => {
-                  return <span>{skill.skill_name + ": " + skill.point}</span>;
+                  return (
+                    <span className="whitespace-nowrap">
+                      {skill.skill_name + ": " + skill.point}
+                    </span>
+                  );
                 })}
             </div>
-            <div className="flex flex-col border">
-              <span>Skills</span>
-              {gameState?.character.info.skill_and_stat
-                .filter((el: any) => el.is_skill)
-                .map((skill: any) => {
-                  return <span>{skill.skill_name + ": " + skill.point}</span>;
-                })}
+            <div className="flex flex-col gap-2 ">
+              <span className="text-green-500 text-base font-medium ">
+                Skills
+              </span>
+              <div className="flex gap-2">
+                {gameState?.character.info.skill_and_stat
+                  .filter((el: any) => el.is_skill)
+                  .map((skill: any) => {
+                    return (
+                      <span className="flex flex-col">
+                        <span className="whitespace-nowrap">
+                          {skill.skill_name}
+                        </span>
+                        <span>{skill.point}</span>
+                      </span>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         )}
       </div>
       <div className="flex gap-4">
-        <div className="border p-4 flex flex-col gap-8">
+        <div className=" p-4 flex flex-col gap-8">
           <select
             className="text-black"
             name=""
@@ -227,17 +251,19 @@ const TestPage = () => {
           >
             Start Battle
           </button>
-          <button
-            onClick={() => {
-              attackBattle();
-              characterInfo();
-            }}
-            className="border p-2 rounded border-zinc-50 "
-          >
-            Attack
-          </button>
+          {gameState?.battle?.id && (
+            <button
+              onClick={() => {
+                attackBattle();
+                characterInfo();
+              }}
+              className="border p-2 rounded border-zinc-50 "
+            >
+              Attack
+            </button>
+          )}
         </div>
-        <div className="border min-w-60 min-h-60 flex flex-col">
+        <div className="border min-w-165 min-h-60 flex flex-col">
           <div className="w-full flex justify-center">Logs</div>
           {gameState.battle.logs?.map((log: any) => {
             return (
