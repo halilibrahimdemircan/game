@@ -151,72 +151,76 @@ const TestPage = () => {
   }, [gameState]);
 
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <div className="flex flex-col w-screen min-h-20">
-        <h3>Character Stats</h3>
+    <div className="flex flex-col gap-4 justify-center items-center ">
+      <div className="flex flex-col w-screen min-h-20 p-4 bg-gray-800 ">
+        {/* <h3>Character Stats</h3> */}
         {
           // @ts-ignore
           gameState?.character.info.character_hp && (
-            <div className=" flex gap-4">
-              <div className="flex flex-col">
-                <span className="text-green-500 text-base font-medium ">
-                  Health
-                </span>
-                <span>
-                  {
-                    // @ts-ignore
-                    gameState?.character.info.character_hp
-                      .health_points_available +
-                      "/" +
+            <div className=" flex flex-col gap-4">
+              <div className="flex gap-4">
+                <div className="flex flex-col">
+                  <span className="text-green-500 text-base font-medium ">
+                    Health
+                  </span>
+                  <span>
+                    {
                       // @ts-ignore
-                      gameState?.character.info.character_hp.health_points_max
-                  }
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-green-500 text-base font-medium ">
-                  Gold
-                </span>
-                <span>
+                      gameState?.character.info.character_hp
+                        .health_points_available +
+                        "/" +
+                        // @ts-ignore
+                        gameState?.character.info.character_hp.health_points_max
+                    }
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-green-500 text-base font-medium ">
+                    Gold
+                  </span>
+                  <span>
+                    {
+                      // @ts-ignore
+                      gameState?.character.info.gold_amount
+                    }
+                  </span>
+                </div>
+                <div className="flex flex-col ">
+                  <span className="text-green-500 text-base font-medium ">
+                    Inventory
+                  </span>
+                  <div className="flex gap-2">
+                    {
+                      // @ts-ignore
+                      gameState?.character.info.inventory.map((item) => {
+                        return <span>{item.item_name}</span>;
+                      })
+                    }
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-green-500 text-base font-medium ">
+                    Attributes
+                  </span>
                   {
                     // @ts-ignore
-                    gameState?.character.info.gold_amount
+                    gameState?.character.info.skill_and_stat
+                      .filter((el: any) => !el.is_skill)
+                      .map((skill: any) => {
+                        return (
+                          <span className="whitespace-nowrap">
+                            {skill.skill_name + ": " + skill.point}
+                          </span>
+                        );
+                      })
                   }
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-green-500 text-base font-medium ">
-                  Inventory
-                </span>
-                {
-                  // @ts-ignore
-                  gameState?.character.info.inventory.map((item) => {
-                    return <span>{item.item_name}</span>;
-                  })
-                }
-              </div>
-              <div className="flex flex-col">
-                <span className="text-green-500 text-base font-medium ">
-                  Attributes
-                </span>
-                {
-                  // @ts-ignore
-                  gameState?.character.info.skill_and_stat
-                    .filter((el: any) => !el.is_skill)
-                    .map((skill: any) => {
-                      return (
-                        <span className="whitespace-nowrap">
-                          {skill.skill_name + ": " + skill.point}
-                        </span>
-                      );
-                    })
-                }
+                </div>
               </div>
               <div className="flex flex-col gap-2 ">
                 <span className="text-green-500 text-base font-medium ">
                   Skills
                 </span>
-                <div className="flex gap-2">
+                <div className="flex gap-6">
                   {
                     // @ts-ignore
                     gameState?.character.info.skill_and_stat
@@ -243,7 +247,7 @@ const TestPage = () => {
           <select
             className="text-black"
             name=""
-            id=""
+            id="selectCreature"
             value={gameState.creature.id}
             onChange={(e) => handleChangeSelection(e.target.value)}
           >
@@ -268,7 +272,7 @@ const TestPage = () => {
               startBattle();
               characterInfo();
             }}
-            className="border p-2 rounded border-zinc-50 "
+            className="border p-2 rounded border-gray-600 hover:bg-green-700"
           >
             Start Battle
           </button>
@@ -278,7 +282,7 @@ const TestPage = () => {
                 attackBattle();
                 characterInfo();
               }}
-              className="border p-2 rounded border-zinc-50 "
+              className="border p-2 rounded border-gray-600 hover:bg-green-700 "
             >
               Attack
             </button>
