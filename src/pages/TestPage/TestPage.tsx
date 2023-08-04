@@ -154,68 +154,89 @@ const TestPage = () => {
     <div className="flex flex-col justify-center items-center ">
       <div className="flex flex-col w-screen min-h-20">
         <h3>Character Stats</h3>
-        {gameState?.character.info.character_hp && (
-          <div className=" flex gap-4">
-            <div className="flex flex-col">
-              <span className="text-green-500 text-base font-medium ">
-                Health
-              </span>
-              <span>
-                {gameState?.character.info.character_hp
-                  .health_points_available +
-                  "/" +
-                  gameState?.character.info.character_hp.health_points_max}
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-green-500 text-base font-medium ">
-                Gold
-              </span>
-              <span>{gameState?.character.info.gold_amount}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-green-500 text-base font-medium ">
-                Inventory
-              </span>
-              {gameState?.character.info.inventory.map((item) => {
-                return <span>{item.item_name}</span>;
-              })}
-            </div>
-            <div className="flex flex-col">
-              <span className="text-green-500 text-base font-medium ">
-                Attributes
-              </span>
-              {gameState?.character.info.skill_and_stat
-                .filter((el: any) => !el.is_skill)
-                .map((skill: any) => {
-                  return (
-                    <span className="whitespace-nowrap">
-                      {skill.skill_name + ": " + skill.point}
-                    </span>
-                  );
-                })}
-            </div>
-            <div className="flex flex-col gap-2 ">
-              <span className="text-green-500 text-base font-medium ">
-                Skills
-              </span>
-              <div className="flex gap-2">
-                {gameState?.character.info.skill_and_stat
-                  .filter((el: any) => el.is_skill)
-                  .map((skill: any) => {
-                    return (
-                      <span className="flex flex-col">
+        {
+          // @ts-ignore
+          gameState?.character.info.character_hp && (
+            <div className=" flex gap-4">
+              <div className="flex flex-col">
+                <span className="text-green-500 text-base font-medium ">
+                  Health
+                </span>
+                <span>
+                  {
+                    // @ts-ignore
+                    gameState?.character.info.character_hp
+                      .health_points_available +
+                      "/" +
+                      // @ts-ignore
+                      gameState?.character.info.character_hp.health_points_max
+                  }
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-green-500 text-base font-medium ">
+                  Gold
+                </span>
+                <span>
+                  {
+                    // @ts-ignore
+                    gameState?.character.info.gold_amount
+                  }
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-green-500 text-base font-medium ">
+                  Inventory
+                </span>
+                {
+                  // @ts-ignore
+                  gameState?.character.info.inventory.map((item) => {
+                    return <span>{item.item_name}</span>;
+                  })
+                }
+              </div>
+              <div className="flex flex-col">
+                <span className="text-green-500 text-base font-medium ">
+                  Attributes
+                </span>
+                {
+                  // @ts-ignore
+                  gameState?.character.info.skill_and_stat
+                    .filter((el: any) => !el.is_skill)
+                    .map((skill: any) => {
+                      return (
                         <span className="whitespace-nowrap">
-                          {skill.skill_name}
+                          {skill.skill_name + ": " + skill.point}
                         </span>
-                        <span>{skill.point}</span>
-                      </span>
-                    );
-                  })}
+                      );
+                    })
+                }
+              </div>
+              <div className="flex flex-col gap-2 ">
+                <span className="text-green-500 text-base font-medium ">
+                  Skills
+                </span>
+                <div className="flex gap-2">
+                  {
+                    // @ts-ignore
+                    gameState?.character.info.skill_and_stat
+                      .filter((el: any) => el.is_skill)
+                      .map((skill: any) => {
+                        return (
+                          <span className="flex flex-col">
+                            <span className="whitespace-nowrap">
+                              {skill.skill_name}
+                            </span>
+                            <span>{skill.point}</span>
+                          </span>
+                        );
+                      })
+                  }
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )
+        }
       </div>
       <div className="flex gap-4">
         <div className=" p-4 flex flex-col gap-8">
