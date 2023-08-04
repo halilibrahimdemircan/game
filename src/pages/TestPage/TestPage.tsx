@@ -153,6 +153,15 @@ const TestPage = () => {
   // useEffect(() => {
   //   console.log("gameState:>> ", gameState);
   // }, [gameState]);
+  function getAllStatsDescriptionList(logs: any) {
+    const allStatsDescriptionList: any = [];
+    logs.forEach((log: any) => {
+      if (log.stats_description_list && log.stats_description_list.length > 0) {
+        allStatsDescriptionList.push(...log.stats_description_list);
+      }
+    });
+    return allStatsDescriptionList;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center ">
@@ -302,8 +311,8 @@ const TestPage = () => {
                 <button
                   // @ts-ignore
                   disabled={gameState?.battle?.battleInfo?.is_finish}
-                  onClick={() => {
-                    attackBattle();
+                  onClick={async () => {
+                    await attackBattle();
                     characterInfo();
                   }}
                   className="border p-2 rounded border-gray-600 hover:bg-green-700 "
@@ -312,13 +321,31 @@ const TestPage = () => {
                 </button>
               )}
             </div>
-            <div className="border border-gray-500 rounded min-w-165 min-h-60 flex flex-col p-2">
+            <div className="border border-gray-500 rounded min-w-165 h-72 flex flex-col p-2 overflow-auto">
               <div className="col-span-6 w-full flex justify-center">Logs</div>
               <ul>
                 {gameState?.battle?.logs?.map((log: any) => {
                   return <li>{`${log.description}`}</li>;
                 })}
               </ul>
+            </div>
+          </div>
+          <div className=" grid grid-cols-8 gap-4">
+            <div className="col-span-2"></div>
+
+            <div className="border border-gray-500 rounded min-w-165 min-h-20 flex flex-col p-2 items-center">
+              <span>Skill Stats</span>
+              <div className="flex flex-col items-start">
+                {
+                  // @ts-ignore
+                  gameState.battle.logs.length &&
+                    getAllStatsDescriptionList(gameState.battle.logs).map(
+                      (log: any) => {
+                        return <span>{log}</span>;
+                      }
+                    )
+                }
+              </div>
             </div>
           </div>
           <div className=" grid grid-cols-8 gap-4">
