@@ -88,7 +88,7 @@ const TestPage = () => {
       },
       body: JSON.stringify({
         battle_id: gameState.battle.id,
-        skill_id: 12,
+        skill_id: 11,
       }),
     }).then((res) => res.json());
     console.log("attack :>> ", attack);
