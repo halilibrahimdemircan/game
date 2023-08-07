@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 // @ts-ignore
 
-const CreateCreaturePage = () => {
+const CreateCharacterPage = () => {
   const [characterInfo, setCharacterInfo] = useState({
     status: "idle",
     error: "",
@@ -81,81 +82,60 @@ const CreateCreaturePage = () => {
     value: any,
     type: string,
     sequence: number,
-    id?: number | null
+    id?: any
   ) => {
-    console.log("id,value,type,sequence :>> ", id, value, type, sequence);
-
-    // Değişiklikleri yapmak için karakter durumunu kopyalayın
     if (type === "character_name") {
       setCharacterState((prevCharacterState) => ({
         ...prevCharacterState,
         character_name: value,
       }));
     } else if (type === "style") {
-      const updatedCharacterState: any = { ...characterState };
-      let optionValue;
+      const updatedCharacterState = { ...characterState };
+      let optionValue: string | undefined;
 
-      // `type` (style veya skill) ile ilgili seçenekleri alın
       const options = updatedCharacterState.style;
-      // Seçeneklerin değerlerini ayrıştırın
+
       if (id === null) {
         //
       } else {
         optionValue = value?.includes(":") ? value.split(":")[1] : value;
       }
 
-      console.log("id,optionValue :>> ", id, optionValue);
-      // `sequence` ile belirtilen indekse sahip olan seçeneği güncelleyin
       if (options[sequence]) {
         options[sequence] = {
           ...options[sequence],
           id: id,
-          value: optionValue,
+          value: optionValue!,
         };
       }
 
-      // `type` (style veya skill) ile güncellenmiş seçenekleri karakter durumuna atayın
-
       updatedCharacterState.style = options;
-
-      // Karakter durumunu güncelleyin
       setCharacterState(updatedCharacterState);
-    } else if (type === "skills") {
-      const updatedCharacterState: any = { ...characterState };
-      const options = updatedCharacterState.style;
-      updatedCharacterState.skills = options;
-      // is_skill propu false olanların toplam değerini hesaplayın
-      const isSkillFalseOptions = options.filter(
-        (option: any) => !option.is_skill
-      );
-      const totalValue = isSkillFalseOptions.reduce(
-        (sum: number, option: any) => sum + option.value,
+    } else if (type === "attribute") {
+      console.log("value,type,sequence,id :>> ", value, type, sequence, id);
+      const updatedCharacterState = { ...characterState };
+      const options = updatedCharacterState.skills;
+
+      const nonSkillValues = options
+        .filter((skill) => !skill.is_skill)
+        .map((skill) => skill.value);
+
+      const oldValue = options[sequence].value;
+
+      const currentTotal = nonSkillValues.reduce(
+        (sum, value) => sum + value,
         0
       );
-
-      // Eğer toplam değer 85'i geçiyorsa, güncellemeyi iptal edin ve uyarı verin
-      if (totalValue > 85) {
+      if (currentTotal + parseInt(value) - oldValue <= 85) {
+        options[sequence] = { ...options[sequence], value: parseInt(value) };
+        updatedCharacterState.skills = options;
+        setCharacterState(updatedCharacterState);
+      } else {
+        // toast.error("Toplam değer 85'i geçemez!");
         console.log("Toplam değer 85'i geçemez!");
-        return;
       }
     }
   };
-  useEffect(() => {
-    if (characterInfo?.status == "success") {
-      // @ts-ignore
-      let result1 =
-        // @ts-ignore
-        characterInfo?.data?.styles["Hair Style"]?.data[1].id +
-        ":" +
-        // @ts-ignore
-        characterInfo?.data?.styles["Hair Style"]?.data[1].value;
-      let result2 =
-        characterState.style[0].id + ":" + characterState.style[0].value;
-      let result = result1 === result2;
-      console.log("result1 :>> ", result1);
-      console.log("result2 :>> ", result2);
-    }
-  });
 
   console.log("characterState :>> ", characterState);
 
@@ -369,16 +349,17 @@ const CreateCreaturePage = () => {
         // skill kısmı
       }
       <div className="grid grid-cols-12">
-        <div className="flex flex-col col-span-6 ">
+        <div className="flex flex-col col-span-3 ">
           {
             // @ts-ignore
             characterInfo?.data?.attributes?.map(
               (attribute: any, index: number) => {
                 return (
-                  <div className="flex flex-col" key={index}>
+                  <div className="flex flex-col w-full" key={index}>
                     <label htmlFor={attribute.id}>{attribute.name}</label>
-                    <div className="flex">
+                    <div className="flex w-full">
                       <input
+                        className="w-full"
                         type="range"
                         min={attribute.min}
                         max={attribute.max}
@@ -392,8 +373,9 @@ const CreateCreaturePage = () => {
                         onChange={(e) =>
                           handleCharacterSelection(
                             parseInt(e.target.value),
-                            "skill",
-                            attribute.id - 1
+                            "attribute",
+                            attribute.id - 1,
+                            attribute.id
                           )
                         }
                       ></input>
@@ -412,9 +394,10 @@ const CreateCreaturePage = () => {
           }
         </div>
         <div className="flex flex-col col-span-6"></div>
+        <div className="flex flex-col col-span-3">skills</div>
       </div>
     </div>
   );
 };
 
-export default CreateCreaturePage;
+export default CreateCharacterPage;
