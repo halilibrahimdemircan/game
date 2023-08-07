@@ -15,7 +15,7 @@ import { logout, selectUser, checkUserAsync } from "./features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import TestPage from "./pages/TestPage/TestPage";
-import CreateCreaturePage from "./pages/CreateCreaturePage/CreateCreaturePage";
+import CreateCreaturePage from "./pages/CreateCharacterPage/CreateCharacterPage";
 
 // const LoginPage = lazyWithRetry(() => import('./pages/LoginPage/LoginPage'))
 
