@@ -179,13 +179,36 @@ const CreateCharacterPage = () => {
     options[sequence] = { ...options[sequence], id: id };
     setCharacterState(updatedCharacterState);
   };
+  const saveCharacter = async () => {
+    const saveData = await fetch(
+      "https://gapi.nftinit.io/api/create_character/",
+      {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          userInfo: JSON.stringify({
+            token: "12345",
+            character_id: "12",
+          }),
+        },
+        body: JSON.stringify({
+          ...characterState,
+        }),
+      }
+    ).then((res) => res.json());
+    console.log("saveData :>> ", saveData);
+    if (saveData.success) {
+      toast.success("Character added successfully");
+    }
+  };
 
   return (
-    <div className="">
+    <div className="w-screen h-screen flex items-center">
       {
         // style kısmı
       }
-      <div>
+      <div className=" w-full flex flex-col gap-4 ">
         <div className="flex w-full justify-center">
           <input
             className="w-96 text-black"
@@ -196,8 +219,8 @@ const CreateCharacterPage = () => {
             }
           />
         </div>
-        <div className="grid grid-cols-12">
-          <div className="col-span-4 h-full w-full flex flex-col gap-6 items-center justify-center">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-4 h-full w-full flex flex-col gap-12 items-center justify-center">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col w-60">
                 <label htmlFor="">Hair Style</label>
@@ -371,7 +394,7 @@ const CreateCharacterPage = () => {
           <div className="col-span-4 h-full w-full flex items-center justify-center">
             Character Image
           </div>
-          <div className="col-span-4 h-full w-full flex flex-col gap-2 items-center justify-center">
+          <div className="col-span-4 h-full w-full flex flex-col gap-6 items-center justify-center">
             <div className="flex flex-col">
               <label htmlFor="">Skin Tone</label>
               <input
@@ -517,6 +540,14 @@ const CreateCharacterPage = () => {
               }
             </div>
           </div>
+        </div>
+        <div className="flex w-full justify-center">
+          <button
+            className="border py-2 px-4 rounded"
+            onClick={() => saveCharacter()}
+          >
+            Save
+          </button>
         </div>
       </div>
       {
