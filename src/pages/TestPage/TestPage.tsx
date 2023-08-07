@@ -134,6 +134,32 @@ const TestPage = () => {
       },
     }));
   };
+  const characterHealthBoost = async () => {
+    const characterBoost = await fetch(
+      "https://gapi.nftinit.io/api/character_health_boost/",
+      {
+        method: "POST",
+        //   mode: "cors",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+
+          userInfo: JSON.stringify({
+            token: "12345",
+            character_id: "12",
+          }),
+        },
+        // body: JSON.stringify({
+        //   creature_id: gameState.creature.id,
+        // }),
+      }
+    ).then((res) => res.json());
+    console.log("characterBoost :>> ", characterBoost);
+    if (characterBoost.success) {
+      characterInfo();
+    }
+  };
 
   useEffect(() => {
     getCreatures();
@@ -170,8 +196,9 @@ const TestPage = () => {
         {
           // @ts-ignore
           gameState?.character.info.character_hp && (
-            <div className=" flex flex-col gap-4">
-              <div className="flex gap-4">
+            <div className=" grid grid-cols-12 gap-4 ">
+              <div className="col-span-1"></div>
+              <div className="col-span-10  flex gap-4">
                 <div className="flex flex-col">
                   <span className="text-green-500 text-base font-medium ">
                     Health
@@ -218,6 +245,14 @@ const TestPage = () => {
                     }
                   </div>
                 </div>
+              </div>
+              <div className="col-span-1  w-full flex justify-end">
+                <button
+                  className="border rounded p-2"
+                  onClick={() => characterHealthBoost()}
+                >
+                  Boost
+                </button>
               </div>
             </div>
           )
