@@ -5,6 +5,7 @@ const TestPage = () => {
   const [gameState, setGameState] = useState({
     character: {
       info: {},
+      selectedSkillId: null,
     },
     creature: {
       id: undefined,
@@ -14,6 +15,7 @@ const TestPage = () => {
       battleInfo: {},
       lootLogs: [],
       logs: [],
+      coolDownSpellList: [],
     },
   });
   const getCreatures = async () => {
@@ -89,6 +91,7 @@ const TestPage = () => {
       body: JSON.stringify({
         battle_id: gameState.battle.id,
         skill_id: 11,
+        spell_id: gameState.character.selectedSkillId,
       }),
     }).then((res) => res.json());
     console.log("attack :>> ", attack);
@@ -99,7 +102,8 @@ const TestPage = () => {
         // logs: [...prevGameState.battle.logs, ...attack.battle_logs],
         battleInfo: { ...attack?.battle_info },
         lootLogs: [...attack?.loot_logs],
-        logs: [...attack.battle_logs],
+        logs: [...attack?.battle_logs],
+        coolDownSpellList: [...attack?.cool_down_spell_list],
       },
     }));
     // burada logları setleyeceğiz
@@ -131,6 +135,8 @@ const TestPage = () => {
       character: {
         ...prevGameState.character,
         info: characterInfo.character_info,
+        selectedSkillId:
+          characterInfo?.character_info?.character_skill_and_spell[0]?.spell_id,
       },
     }));
   };
@@ -167,12 +173,21 @@ const TestPage = () => {
   }, []);
 
   const handleChangeSelection = (creatureId: any) => {
-    console.log("girdi");
     setGameState((prevGameState) => ({
       ...prevGameState,
       creature: {
         ...prevGameState.creature,
         id: creatureId,
+      },
+    }));
+  };
+  const handleChangeSkillSelection = (skillId: any) => {
+    console.log("girdi");
+    setGameState((prevGameState) => ({
+      ...prevGameState,
+      character: {
+        ...prevGameState.character,
+        selectedSkillId: skillId,
       },
     }));
   };
@@ -343,17 +358,53 @@ const TestPage = () => {
                 Start Battle
               </button>
               {gameState?.battle?.id && (
-                <button
-                  // @ts-ignore
-                  disabled={gameState?.battle?.battleInfo?.is_finish}
-                  onClick={async () => {
-                    await attackBattle();
-                    characterInfo();
-                  }}
-                  className="border p-2 rounded border-gray-600 hover:bg-green-700 "
-                >
-                  Attack
-                </button>
+                <div className="flex flex-col gap-6">
+                  {/* <label htmlFor="selectSkill">Select Skill</label> */}
+                  <select
+                    onChange={(e) => handleChangeSkillSelection(e.target.value)}
+                    className="text-black"
+                    name=""
+                    id="selectSkill"
+                  >
+                    {
+                      // @ts-ignore
+                      gameState?.character?.info?.character_skill_and_spell?.map(
+                        (spell: any) => {
+                          return (
+                            <option
+                              className="text-black"
+                              disabled={
+                                !spell?.is_usable ||
+                                gameState.battle.coolDownSpellList.find(
+                                  (el: any) =>
+                                    el.skill_id == spell.skill_id &&
+                                    el.spell_id == spell.spell_id
+                                  //@ts-ignore
+                                )?.is_spell_cooldown
+                              }
+                              value={spell.spell_id}
+                            >
+                              {spell.spell_name + " - " + spell.skill_name}
+                            </option>
+                          );
+                        }
+                      )
+                    }
+                  </select>
+                  <button
+                    // @ts-ignore
+                    disabled={gameState?.battle?.battleInfo?.is_finish}
+                    onClick={async () => {
+                      await attackBattle();
+                      setTimeout(() => {
+                        characterInfo();
+                      }, 4000);
+                    }}
+                    className="border p-2 rounded border-gray-600 hover:bg-green-700 "
+                  >
+                    Attack
+                  </button>
+                </div>
               )}
             </div>
             <div className="border border-gray-500 rounded min-w-165 h-72 flex flex-col p-2 overflow-auto">
