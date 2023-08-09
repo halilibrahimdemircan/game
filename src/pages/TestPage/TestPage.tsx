@@ -396,9 +396,7 @@ const TestPage = () => {
                     disabled={gameState?.battle?.battleInfo?.is_finish}
                     onClick={async () => {
                       await attackBattle();
-                      setTimeout(() => {
-                        characterInfo();
-                      }, 4000);
+                      characterInfo();
                     }}
                     className="border p-2 rounded border-gray-600 hover:bg-green-700 "
                   >
