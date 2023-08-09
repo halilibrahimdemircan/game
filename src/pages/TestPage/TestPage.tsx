@@ -1,4 +1,6 @@
+import { error } from "console";
 import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 const TestPage = () => {
   const [creatures, setCreatures] = useState([]);
@@ -93,19 +95,26 @@ const TestPage = () => {
         skill_id: 11,
         spell_id: gameState.character.selectedSkillId,
       }),
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .catch((error) => toast.error(error.message));
     console.log("attack :>> ", attack);
-    setGameState((prevGameState: any) => ({
-      ...prevGameState,
-      battle: {
-        ...prevGameState.battle,
-        // logs: [...prevGameState.battle.logs, ...attack.battle_logs],
-        battleInfo: { ...attack?.battle_info },
-        lootLogs: [...attack?.loot_logs],
-        logs: [...attack?.battle_logs],
-        coolDownSpellList: [...attack?.cool_down_spell_list],
-      },
-    }));
+    if (attack.success) {
+      setGameState((prevGameState: any) => ({
+        ...prevGameState,
+        battle: {
+          ...prevGameState.battle,
+          // logs: [...prevGameState.battle.logs, ...attack.battle_logs],
+          battleInfo: { ...attack?.battle_info },
+          lootLogs: [...attack?.loot_logs],
+          logs: [...attack?.battle_logs],
+          coolDownSpellList: [...attack?.cool_down_spell_list],
+        },
+      }));
+    } else {
+      toast.error(attack?.error_message);
+    }
+
     // burada logları setleyeceğiz
   };
   const characterInfo = async () => {
