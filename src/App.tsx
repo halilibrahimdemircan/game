@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import TestPage from "./pages/TestPage/TestPage";
 import CreateCreaturePage from "./pages/CreateCharacterPage/CreateCharacterPage";
+import CraftingPage from "./pages/CraftingPage/CraftingPage";
 
 // const LoginPage = lazyWithRetry(() => import('./pages/LoginPage/LoginPage'))
 
@@ -73,6 +74,13 @@ const Main = () => {
           <MainLayout>
             <ErrorBoundary>
               <TestPage />
+            </ErrorBoundary>
+          </MainLayout>
+        </Route>
+        <Route exact path="/crafting">
+          <MainLayout>
+            <ErrorBoundary>
+              <CraftingPage />
             </ErrorBoundary>
           </MainLayout>
         </Route>

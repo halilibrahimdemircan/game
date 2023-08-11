@@ -1,121 +1,29 @@
-import { error } from "console";
-import React, { useState, useEffect } from "react";
-import { toast } from "react-hot-toast";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-const TestPage = () => {
-  const [creatures, setCreatures] = useState([]);
+type Props = {};
+
+const CraftingPage = (props: Props) => {
+  const [craftingElements, setCraftingElements] = useState([]);
   const [gameState, setGameState] = useState({
     character: {
       info: {},
       selectedSkillId: null,
     },
-    creature: {
+    craftingElement: {
       id: undefined,
     },
 
-    battle: {
+    crafting: {
       id: undefined,
-      battleInfo: {},
+      craftInfo: {},
       lootLogs: [],
       logs: [],
-      coolDownSpellList: [],
     },
   });
+
   const baseUrl = "http://127.0.0.1:8000";
   // const baseUrl = 'https://gapi.nftinit.io'
-  const getCreatures = async () => {
-    const creatures = await fetch(`${baseUrl}/api/get_creature/`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: "12345",
-      }),
-    }).then((res) => res.json());
-    console.log("creatures :>> ", creatures);
-    setCreatures(creatures.creature_list);
-
-    setGameState((prevGameState) => ({
-      ...prevGameState,
-      creature: {
-        ...prevGameState.creature,
-        id: creatures.creature_list[0].creature_id,
-      },
-    }));
-
-    // burada gelen creatureları setleyeceğiz
-  };
-
-  const startBattle = async () => {
-    const battle = await fetch(`${baseUrl}/api/battle_start/`, {
-      method: "POST",
-      //   mode: "cors",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-
-        userInfo: JSON.stringify({
-          token: "12345",
-          character_id: "12",
-        }),
-      },
-      body: JSON.stringify({
-        creature_id: gameState.creature.id,
-      }),
-    }).then((res) => res.json());
-    console.log("battle :>> ", battle);
-    setGameState((prevGameState) => ({
-      ...prevGameState,
-      battle: {
-        ...prevGameState.battle,
-        id: battle.battle_id,
-      },
-    }));
-
-    // burada battle idyi setleyeceğiz
-  };
-
-  const attackBattle = async () => {
-    const attack = await fetch(`${baseUrl}/api/battle_attack/`, {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        userInfo: JSON.stringify({
-          token: "12345",
-          character_id: "12",
-        }),
-      },
-      body: JSON.stringify({
-        battle_id: gameState.battle.id,
-        skill_id: 11,
-        spell_id: gameState.character.selectedSkillId,
-      }),
-    })
-      .then((res) => res.json())
-      .catch((error) => toast.error(error.message));
-    console.log("attack :>> ", attack);
-    if (attack.success) {
-      setGameState((prevGameState: any) => ({
-        ...prevGameState,
-        battle: {
-          ...prevGameState.battle,
-          // logs: [...prevGameState.battle.logs, ...attack.battle_logs],
-          battleInfo: { ...attack?.battle_info },
-          lootLogs: [...attack?.loot_logs],
-          logs: [...attack?.battle_logs],
-          coolDownSpellList: [...attack?.cool_down_spell_list],
-        },
-      }));
-    } else {
-      toast.error(attack?.error_message);
-    }
-
-    // burada logları setleyeceğiz
-  };
   const characterInfo = async () => {
     const characterInfo = await fetch(`${baseUrl}/api/get_character_info/`, {
       method: "POST",
@@ -145,44 +53,112 @@ const TestPage = () => {
       },
     }));
   };
-  const characterHealthBoost = async () => {
-    const characterBoost = await fetch(
-      `${baseUrl}/api/character_health_boost/`,
+  const getCraftingElements = async () => {
+    const craftingElements = await fetch(
+      `${baseUrl}/api/get_crafting_elements/`,
       {
         method: "POST",
         //   mode: "cors",
         headers: {
-          Accept: "*/*",
+          // "Access-Control-Allow-Origin": "*",
+          Accept: "application/json",
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-
-          userInfo: JSON.stringify({
-            token: "12345",
-            character_id: "12",
-          }),
+          // userInfo: JSON.stringify({
+          //   //   token: "12345",
+          //   //   character_id: "12",
+          // }),
         },
-        // body: JSON.stringify({
-        //   creature_id: gameState.creature.id,
-        // }),
+        body: JSON.stringify({
+          token: "12345",
+        }),
       }
     ).then((res) => res.json());
-    console.log("characterBoost :>> ", characterBoost);
-    if (characterBoost.success) {
-      characterInfo();
-    }
-  };
+    console.log("craftingElements :>> ", craftingElements);
+    setCraftingElements(craftingElements.element_list);
 
-  useEffect(() => {
-    getCreatures();
-    characterInfo();
-  }, []);
-
-  const handleChangeSelection = (creatureId: any) => {
     setGameState((prevGameState) => ({
       ...prevGameState,
-      creature: {
-        ...prevGameState.creature,
-        id: creatureId,
+      craftingElement: {
+        ...prevGameState.craftingElement,
+        id: craftingElements.element_list[0].creature_id,
+      },
+    }));
+
+    // burada gelen creatureları setleyeceğiz
+  };
+  const startCrafting = async () => {
+    const crafting = await fetch(`${baseUrl}/api/farm_start/`, {
+      method: "POST",
+      //   mode: "cors",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+
+        userInfo: JSON.stringify({
+          token: "12345",
+          character_id: "12",
+        }),
+      },
+      body: JSON.stringify({
+        creature_id: gameState.craftingElement.id,
+      }),
+    }).then((res) => res.json());
+    setGameState((prevGameState) => ({
+      ...prevGameState,
+      crafting: {
+        ...prevGameState.crafting,
+        id: crafting.farm_id,
+      },
+    }));
+
+    // burada battle idyi setleyeceğiz
+  };
+  const attackCrafting = async () => {
+    const attack = await fetch(`${baseUrl}/api/farm_attack/`, {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        userInfo: JSON.stringify({
+          token: "12345",
+          character_id: "12",
+        }),
+      },
+      body: JSON.stringify({
+        farm_id: gameState.crafting.id,
+        skill_id: 15,
+        // spell_id: gameState.character.selectedSkillId,
+        spell_id: 11,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((error) => toast.error(error.message));
+    console.log("attack :>> ", attack);
+    if (attack.success) {
+      setGameState((prevGameState: any) => ({
+        ...prevGameState,
+        crafting: {
+          ...prevGameState.crafting,
+          // logs: [...prevGameState.battle.logs, ...attack.battle_logs],
+          craftInfo: { ...attack?.farm_info },
+          lootLogs: [...attack?.loot_logs],
+          logs: [...attack?.farm_logs],
+        },
+      }));
+    } else {
+      toast.error(attack?.error_message);
+    }
+
+    // burada logları setleyeceğiz
+  };
+
+  const handleChangeSelection = (craftingId: any) => {
+    setGameState((prevGameState) => ({
+      ...prevGameState,
+      crafting: {
+        ...prevGameState.crafting,
+        id: craftingId,
       },
     }));
   };
@@ -195,9 +171,16 @@ const TestPage = () => {
       },
     }));
   };
-  // useEffect(() => {
-  //   console.log("gameState:>> ", gameState);
-  // }, [gameState]);
+
+  useEffect(() => {
+    getCraftingElements();
+    characterInfo();
+  }, []);
+
+  useEffect(() => {
+    console.log("gameState :>> ", gameState);
+  }, [gameState]);
+
   function getAllStatsDescriptionList(logs: any) {
     const allStatsDescriptionList: any = [];
     logs.forEach((log: any) => {
@@ -207,7 +190,6 @@ const TestPage = () => {
     });
     return allStatsDescriptionList;
   }
-
   return (
     <div className="flex flex-col justify-center items-center ">
       <div className="flex w-full min-h-20 p-4 bg-gray-800 justify-center ">
@@ -265,14 +247,6 @@ const TestPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-1  w-full flex justify-end">
-                <button
-                  className="border rounded p-2"
-                  onClick={() => characterHealthBoost()}
-                >
-                  Boost
-                </button>
-              </div>
             </div>
           )
         }
@@ -300,7 +274,7 @@ const TestPage = () => {
         <div className="  col-span-8 flex flex-col gap-4 p-4 h-full overflow-auto">
           <div className=" grid grid-cols-8 gap-4">
             <div className="col-span-2"></div>
-            {gameState?.battle?.battleInfo && (
+            {gameState?.crafting?.craftInfo && (
               <div className="border border-gray-500 rounded min-w-165 min-h-20 flex flex-col p-2 items-center">
                 <span>Battle Stats</span>
                 <div className="flex gap-4 items-start">
@@ -310,7 +284,7 @@ const TestPage = () => {
                       {" "}
                       {
                         // @ts-ignore
-                        gameState?.battle?.battleInfo?.character_hp
+                        gameState?.crafting?.craftInfo?.character_hp
                       }
                     </span>
                   </div>
@@ -320,7 +294,7 @@ const TestPage = () => {
                       {" "}
                       {
                         // @ts-ignore
-                        gameState?.battle?.battleInfo?.creature_hp
+                        gameState?.crafting?.craftInfo?.creature_hp
                       }
                     </span>
                   </div>
@@ -334,10 +308,10 @@ const TestPage = () => {
                 className="text-black"
                 name=""
                 id="selectCreature"
-                value={gameState.creature.id}
+                value={gameState.craftingElement.id}
                 onChange={(e) => handleChangeSelection(e.target.value)}
               >
-                {creatures?.map((option: any) => {
+                {craftingElements?.map((option: any) => {
                   return (
                     <option
                       className="text-black"
@@ -349,20 +323,20 @@ const TestPage = () => {
                   );
                 })}
                 {/* <option key={2} value={3}>
-              {"aslan"}
-            </option> */}
+            {"aslan"}
+          </option> */}
               </select>
 
               <button
                 onClick={() => {
-                  startBattle();
+                  startCrafting();
                   characterInfo();
                 }}
                 className="border p-2 rounded border-gray-600 hover:bg-green-700"
               >
-                Start Battle
+                Start
               </button>
-              {gameState?.battle?.id && (
+              {gameState?.crafting?.id && (
                 <div className="flex flex-col gap-6">
                   {/* <label htmlFor="selectSkill">Select Skill</label> */}
                   <select
@@ -373,34 +347,24 @@ const TestPage = () => {
                   >
                     {
                       // @ts-ignore
-                      gameState?.character?.info?.character_skill_and_spell?.map(
-                        (spell: any) => {
+                      gameState?.character?.info?.character_skill_and_spell
+                        ?.filter((spell: any) => spell.skill_id == 15)
+                        .map((spell: any) => {
                           return (
                             <option
                               className="text-black"
-                              disabled={
-                                !spell?.is_usable ||
-                                gameState.battle.coolDownSpellList.find(
-                                  (el: any) =>
-                                    el.skill_id == spell.skill_id &&
-                                    el.spell_id == spell.spell_id
-                                  //@ts-ignore
-                                )?.is_spell_cooldown
-                              }
                               value={spell.spell_id}
                             >
                               {spell.spell_name + " - " + spell.skill_name}
                             </option>
                           );
-                        }
-                      )
+                        })
                     }
                   </select>
                   <button
                     // @ts-ignore
-                    disabled={gameState?.battle?.battleInfo?.is_finish}
                     onClick={async () => {
-                      await attackBattle();
+                      await attackCrafting();
                       characterInfo();
                     }}
                     className="border p-2 rounded border-gray-600 hover:bg-green-700 "
@@ -413,7 +377,7 @@ const TestPage = () => {
             <div className="border border-gray-500 rounded min-w-165 h-72 flex flex-col p-2 overflow-auto">
               <div className="col-span-6 w-full flex justify-center">Logs</div>
               <ul>
-                {gameState?.battle?.logs?.map((log: any) => {
+                {gameState?.crafting?.logs?.map((log: any) => {
                   return <li>{`${log.description}`}</li>;
                 })}
               </ul>
@@ -427,8 +391,8 @@ const TestPage = () => {
               <div className="flex flex-col items-start">
                 {
                   // @ts-ignore
-                  gameState.battle.logs.length &&
-                    getAllStatsDescriptionList(gameState.battle.logs).map(
+                  gameState.crafting.logs.length &&
+                    getAllStatsDescriptionList(gameState.crafting.logs).map(
                       (log: any) => {
                         return <span>{log}</span>;
                       }
@@ -439,11 +403,11 @@ const TestPage = () => {
           </div>
           <div className=" grid grid-cols-8 gap-4">
             <div className="col-span-2"></div>
-            {gameState?.battle?.lootLogs?.length > 0 && (
+            {gameState?.crafting?.lootLogs?.length > 0 && (
               <div className="border border-gray-500 rounded min-w-165 min-h-20 flex flex-col p-2 items-center">
                 <span>Loots</span>
                 <div className="flex flex-col items-start">
-                  {gameState?.battle?.lootLogs?.map((log: any) => {
+                  {gameState?.crafting?.lootLogs?.map((log: any) => {
                     return <span>{log}</span>;
                   })}
                 </div>
@@ -480,4 +444,4 @@ const TestPage = () => {
   );
 };
 
-export default TestPage;
+export default CraftingPage;
