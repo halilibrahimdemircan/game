@@ -21,8 +21,8 @@ const TestPage = () => {
       coolDownSpellList: [],
     },
   });
-  const baseUrl = "http://127.0.0.1:8000";
-  // const baseUrl = 'https://gapi.nftinit.io'
+  // const baseUrl = "http://127.0.0.1:8000";
+  const baseUrl = "https://gapi.nftinit.io";
   const getCreatures = async () => {
     const creatures = await fetch(`${baseUrl}/api/get_creature/`, {
       method: "POST",

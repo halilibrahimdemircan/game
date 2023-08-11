@@ -377,9 +377,14 @@ const CraftingPage = (props: Props) => {
             <div className="border border-gray-500 rounded min-w-165 h-72 flex flex-col p-2 overflow-auto">
               <div className="col-span-6 w-full flex justify-center">Logs</div>
               <ul>
-                {gameState?.crafting?.logs?.map((log: any) => {
-                  return <li>{`${log.description}`}</li>;
-                })}
+                {
+                  // @ts-ignore
+                  gameState?.crafting?.logs?.desciription_list?.map(
+                    (log: any) => {
+                      return <li>{`${log}`}</li>;
+                    }
+                  )
+                }
               </ul>
             </div>
           </div>
