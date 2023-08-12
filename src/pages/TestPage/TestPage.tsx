@@ -92,7 +92,10 @@ const TestPage = () => {
       body: JSON.stringify({
         battle_id: gameState.battle.id,
         skill_id: 11,
-        spell_id: gameState.character.selectedSkillId,
+        spell_id:
+          gameState.character.selectedSkillId != null
+            ? parseInt(gameState.character.selectedSkillId)
+            : gameState.character.selectedSkillId,
       }),
     })
       .then((res) => res.json())
@@ -140,8 +143,10 @@ const TestPage = () => {
       character: {
         ...prevGameState.character,
         info: characterInfo.character_info,
-        selectedSkillId:
-          characterInfo?.character_info?.character_skill_and_spell[0]?.spell_id,
+        selectedSkillId: prevGameState.character.selectedSkillId
+          ? prevGameState.character.selectedSkillId
+          : characterInfo?.character_info?.character_skill_and_spell[0]
+              ?.spell_id,
       },
     }));
   };
