@@ -22,8 +22,8 @@ const CraftingPage = (props: Props) => {
     },
   });
 
-  const baseUrl = "http://127.0.0.1:8000";
-  // const baseUrl = 'https://gapi.nftinit.io'
+  //   const baseUrl = "http://127.0.0.1:8000";
+  const baseUrl = "https://gapi.nftinit.io";
   const characterInfo = async () => {
     const characterInfo = await fetch(`${baseUrl}/api/get_character_info/`, {
       method: "POST",
@@ -189,6 +189,15 @@ const CraftingPage = (props: Props) => {
       }
     });
     return allStatsDescriptionList;
+  }
+  function getAllSDescriptionList(logs: any) {
+    const allDescriptionList: any = [];
+    logs.forEach((log: any) => {
+      if (log.desciription_list && log.desciription_list.length > 0) {
+        allDescriptionList.push(...log.desciription_list);
+      }
+    });
+    return allDescriptionList;
   }
   return (
     <div className="flex flex-col justify-center items-center ">
@@ -379,11 +388,12 @@ const CraftingPage = (props: Props) => {
               <ul>
                 {
                   // @ts-ignore
-                  gameState?.crafting?.logs?.desciription_list?.map(
-                    (log: any) => {
-                      return <li>{`${log}`}</li>;
-                    }
-                  )
+                  gameState?.crafting?.logs?.length &&
+                    getAllSDescriptionList(gameState?.crafting?.logs)?.map(
+                      (log: any) => {
+                        return <li>{`${log}`}</li>;
+                      }
+                    )
                 }
               </ul>
             </div>
