@@ -273,7 +273,14 @@ const CraftingPage = (props: Props) => {
               {
                 // @ts-ignore
                 gameState?.character?.info?.inventory?.map((item) => {
-                  return <span>{item.item_name}</span>;
+                  return (
+                    <span>
+                      {item.item_name +
+                        `${
+                          item.count == null ? " (1)" : " (" + item.count + ")"
+                        } `}
+                    </span>
+                  );
                 })
               }
             </div>
