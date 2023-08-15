@@ -166,8 +166,8 @@ const CraftingPage = (props: Props) => {
   const handleChangeSelection = (craftingId: any) => {
     setGameState((prevGameState) => ({
       ...prevGameState,
-      crafting: {
-        ...prevGameState.crafting,
+      craftingElement: {
+        ...prevGameState.craftingElement,
         id: craftingId,
       },
     }));
