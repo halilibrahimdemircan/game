@@ -22,8 +22,8 @@ const CraftingPage = (props: Props) => {
     },
   });
 
-  const baseUrl = "http://127.0.0.1:8000";
-  //   const baseUrl = "https://gapi.nftinit.io";
+  //   const baseUrl = "http://127.0.0.1:8000";
+  const baseUrl = "https://gapi.nftinit.io";
   const characterInfo = async () => {
     const characterInfo = await fetch(`${baseUrl}/api/get_character_info/`, {
       method: "POST",
