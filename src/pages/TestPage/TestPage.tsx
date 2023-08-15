@@ -145,8 +145,7 @@ const TestPage = () => {
         info: characterInfo.character_info,
         selectedSkillId: prevGameState.character.selectedSkillId
           ? prevGameState.character.selectedSkillId
-          : characterInfo?.character_info?.character_skill_and_spell[0]
-              ?.spell_id,
+          : 1,
       },
     }));
   };

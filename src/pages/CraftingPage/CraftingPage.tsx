@@ -364,7 +364,10 @@ const CraftingPage = (props: Props) => {
                     {
                       // @ts-ignore
                       gameState?.character?.info?.character_skill_and_spell
-                        ?.filter((spell: any) => spell.skill_id == 15)
+                        ?.filter(
+                          (spell: any) =>
+                            spell.skill_id == 15 || spell.skill_id == 17
+                        )
                         .map((spell: any) => {
                           return (
                             <option
