@@ -22,8 +22,8 @@ const CraftingPage = (props: Props) => {
     },
   });
 
-  //   const baseUrl = "http://127.0.0.1:8000";
-  const baseUrl = "https://gapi.nftinit.io";
+  const baseUrl = "http://127.0.0.1:8000";
+  //   const baseUrl = "https://gapi.nftinit.io";
   const characterInfo = async () => {
     const characterInfo = await fetch(`${baseUrl}/api/get_character_info/`, {
       method: "POST",
@@ -127,9 +127,19 @@ const CraftingPage = (props: Props) => {
       },
       body: JSON.stringify({
         farm_id: gameState.crafting.id,
-        skill_id: 15,
+        skill_id:
+          gameState.craftingElement.id == 999999
+            ? 15
+            : gameState.craftingElement.id == 999998
+            ? 17
+            : "",
         // spell_id: gameState.character.selectedSkillId,
-        spell_id: 11,
+        spell_id:
+          gameState.craftingElement.id == 999999
+            ? 11
+            : gameState.craftingElement.id == 999998
+            ? 1
+            : 11,
       }),
     })
       .then((res) => res.json())
@@ -364,9 +374,12 @@ const CraftingPage = (props: Props) => {
                     {
                       // @ts-ignore
                       gameState?.character?.info?.character_skill_and_spell
-                        ?.filter(
-                          (spell: any) =>
-                            spell.skill_id == 15 || spell.skill_id == 17
+                        ?.filter((spell: any) =>
+                          gameState.craftingElement.id == 999999
+                            ? spell.skill_id == 15
+                            : gameState.craftingElement.id == 999998
+                            ? spell.skill_id == 17
+                            : ""
                         )
                         .map((spell: any) => {
                           return (
