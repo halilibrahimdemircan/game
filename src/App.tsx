@@ -17,6 +17,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import TestPage from "./pages/TestPage/TestPage";
 import CreateCreaturePage from "./pages/CreateCharacterPage/CreateCharacterPage";
 import CraftingPage from "./pages/CraftingPage/CraftingPage";
+import FarmPage from "./pages/FarmPage/FarmPage";
 
 // const LoginPage = lazyWithRetry(() => import('./pages/LoginPage/LoginPage'))
 
@@ -81,6 +82,13 @@ const Main = () => {
           <MainLayout>
             <ErrorBoundary>
               <CraftingPage />
+            </ErrorBoundary>
+          </MainLayout>
+        </Route>
+        <Route exact path="/farm">
+          <MainLayout>
+            <ErrorBoundary>
+              <FarmPage />
             </ErrorBoundary>
           </MainLayout>
         </Route>
